@@ -6,6 +6,7 @@ import ClientesList from './components/ClientesList';
 import LeadsHistory from './components/LeadsHistory';
 import ModalNovoCliente from './components/ModalNovoCliente';
 import LoginPage from './pages/LoginPage';
+import logo from './assets/logo.png';
 import './App.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -97,10 +98,8 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                <svg viewBox="0 0 100 100" className="w-6 h-6 text-orange-600" fill="currentColor">
-                  <path d="M30 20 Q40 30 35 50 Q30 70 50 80 Q70 90 80 70 Q85 50 75 40 Q65 30 50 35" />
-                </svg>
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-1">
+                <img src={logo} alt="Zaytan" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h1 className="text-3xl font-bold">Zaytan Lead Manager</h1>
