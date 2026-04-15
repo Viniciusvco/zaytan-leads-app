@@ -1,27 +1,42 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Edit2, Power, Zap, TrendingUp, Users, DollarSign } from 'lucide-react';
+import { Plus, Edit2, Power, Zap, TrendingUp, Users, DollarSign, LogOut } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import ClientesList from './components/ClientesList';
 import LeadsHistory from './components/LeadsHistory';
 import ModalNovoCliente from './components/ModalNovoCliente';
+import LoginPage from './pages/LoginPage';
 import './App.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [aba, setAba] = useState('dashboard');
   const [clientes, setClientes] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModalNovoCliente, setShowModalNovoCliente] = useState(false);
 
-  // Carregar dados
+  // Verificar autenticação ao carregar
   useEffect(() => {
-    carregarDados();
-    const intervalo = setInterval(carregarDados, 5000); // Atualizar a cada 5s
-    return () => clearInterval(intervalo);
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      setLoading(false);
+    }
   }, []);
+
+  // Carregar dados quando autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      carregarDados();
+      const intervalo = setInterval(carregarDados, 5000); // Atualizar a cada 5s
+      return () => clearInterval(intervalo);
+    }
+  }, [isAuthenticated]);
 
   const carregarDados = async () => {
     try {
@@ -48,9 +63,25 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminEmail');
+    setIsAuthenticated(false);
+    setClientes([]);
+    setStats(null);
+  };
+
+  // Se não autenticado, mostrar login
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={() => {
+      setIsAuthenticated(true);
+      setLoading(true);
+    }} />;
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-600 to-blue-800">
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-orange-600 to-orange-500">
         <div className="text-white text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-xl">Carregando Zaytan...</p>
@@ -62,21 +93,32 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+      <header className="bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                <Zap className="w-6 h-6 text-blue-600" />
+                <svg viewBox="0 0 100 100" className="w-6 h-6 text-orange-600" fill="currentColor">
+                  <path d="M30 20 Q40 30 35 50 Q30 70 50 80 Q70 90 80 70 Q85 50 75 40 Q65 30 50 35" />
+                </svg>
               </div>
               <div>
                 <h1 className="text-3xl font-bold">Zaytan Lead Manager</h1>
-                <p className="text-blue-100 text-sm">Distribuição inteligente de leads</p>
+                <p className="text-orange-100 text-sm">Distribuição inteligente de leads</p>
               </div>
             </div>
-            <div className="text-right text-sm text-blue-100">
-              <p>Admin: Vinicius</p>
-              <p>vinicius.ap202@gmail.com</p>
+            <div className="flex items-center gap-4">
+              <div className="text-right text-sm text-orange-100">
+                <p>Admin: Vinicius</p>
+                <p>vinicius.ap202@gmail.com</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="bg-orange-700 hover:bg-orange-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition duration-200"
+              >
+                <LogOut className="w-4 h-4" />
+                Sair
+              </button>
             </div>
           </div>
         </div>
@@ -91,7 +133,7 @@ function App() {
                 onClick={() => setAba('dashboard')}
                 className={`px-1 py-2 border-b-2 font-medium text-sm transition-colors ${
                   aba === 'dashboard'
-                    ? 'border-blue-600 text-blue-600'
+                    ? 'border-orange-600 text-orange-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -101,7 +143,7 @@ function App() {
                 onClick={() => setAba('clientes')}
                 className={`px-1 py-2 border-b-2 font-medium text-sm transition-colors ${
                   aba === 'clientes'
-                    ? 'border-blue-600 text-blue-600'
+                    ? 'border-orange-600 text-orange-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -111,7 +153,7 @@ function App() {
                 onClick={() => setAba('leads')}
                 className={`px-1 py-2 border-b-2 font-medium text-sm transition-colors ${
                   aba === 'leads'
-                    ? 'border-blue-600 text-blue-600'
+                    ? 'border-orange-600 text-orange-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -121,7 +163,7 @@ function App() {
 
             <button
               onClick={() => setShowModalNovoCliente(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Novo Cliente
