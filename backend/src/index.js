@@ -217,29 +217,43 @@ app.post('/api/clientes', async (req, res) => {
     }
 
     const novoCliente = {
-      nome,
+      nome: String(nome).trim(),
       saldo_financeiro: parseFloat(saldo_financeiro),
       limite_diario: parseInt(limite_diario),
-      spreadsheet_id: spreadsheet_id || null,
+      spreadsheet_id: (spreadsheet_id && String(spreadsheet_id).trim()) || null,
       status: true,
       leads_recebidos_hoje: 0
     };
 
-    const { data, error } = await supabase
-      .from('clientes')
-      .insert([novoCliente])
-      .select()
-      .single();
+    console.log('Inserindo cliente:', novoCliente);
 
-    if (error) {
-      console.error('Erro Supabase:', error);
-      throw error;
+    // Inserir apenas
+    const { error: insertError } = await supabase
+      .from('clientes')
+      .insert([novoCliente]);
+
+    if (insertError) {
+      console.error('Erro ao inserir:', insertError);
+      throw insertError;
     }
 
-    res.status(201).json(data);
+    // Buscar o cliente criado
+    const { data: clientes, error: selectError } = await supabase
+      .from('clientes')
+      .select('*')
+      .eq('nome', novoCliente.nome)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (selectError || !clientes || clientes.length === 0) {
+      console.error('Erro ao buscar cliente criado:', selectError);
+      return res.status(201).json({ status: 'created', message: 'Cliente criado com sucesso' });
+    }
+
+    res.status(201).json(clientes[0]);
   } catch (error) {
-    console.error('Erro ao criar cliente:', error.message || error);
-    res.status(500).json({ error: 'Erro ao criar cliente: ' + (error.message || error) });
+    console.error('Erro ao criar cliente:', error);
+    res.status(500).json({ error: 'Erro ao criar cliente', details: error.message });
   }
 });
 
