@@ -180,26 +180,35 @@ app.post('/api/clientes', async (req, res) => {
   try {
     const { nome, saldo_financeiro, limite_diario, spreadsheet_id } = req.body;
 
+    // Validar dados obrigatórios
+    if (!nome || saldo_financeiro == null || limite_diario == null) {
+      return res.status(400).json({ error: 'Nome, saldo e limite são obrigatórios' });
+    }
+
+    const novoCliente = {
+      nome,
+      saldo_financeiro: parseFloat(saldo_financeiro),
+      limite_diario: parseInt(limite_diario),
+      spreadsheet_id: spreadsheet_id || null,
+      status: true,
+      leads_recebidos_hoje: 0
+    };
+
     const { data, error } = await supabase
       .from('clientes')
-      .insert([
-        {
-          nome,
-          saldo_financeiro,
-          limite_diario,
-          spreadsheet_id,
-          status: true,
-          leads_recebidos_hoje: 0
-        }
-      ])
-      .select();
+      .insert([novoCliente])
+      .select()
+      .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Erro Supabase:', error);
+      throw error;
+    }
 
-    res.status(201).json(data[0]);
+    res.status(201).json(data);
   } catch (error) {
-    console.error('Erro ao criar cliente:', error);
-    res.status(500).json({ error: 'Erro ao criar cliente' });
+    console.error('Erro ao criar cliente:', error.message || error);
+    res.status(500).json({ error: 'Erro ao criar cliente: ' + (error.message || error) });
   }
 });
 
