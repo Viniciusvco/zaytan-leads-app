@@ -98,9 +98,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-1">
-                <img src={logo} alt="Zaytan" className="w-full h-full object-contain" />
-              </div>
+              <img src={logo} alt="Zaytan" className="w-10 h-10 object-contain" />
               <div>
                 <h1 className="text-3xl font-bold">Zaytan Lead Manager</h1>
                 <p className="text-orange-100 text-sm">Distribuição inteligente de leads</p>
