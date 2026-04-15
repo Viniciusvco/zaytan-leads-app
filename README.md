@@ -237,3 +237,4 @@ MIT - Desenvolvido para Zaytan Marketing
 **Versão**: 1.0.0  
 **Status**: ✅ Pronto para Produção  
 **Autor**: Vinicius (vinicius.ap202@gmail.com)
+# zaytan-leads-app
