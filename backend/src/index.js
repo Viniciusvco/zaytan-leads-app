@@ -188,15 +188,15 @@ app.post('/api/clientes', async (req, res) => {
           saldo_financeiro,
           limite_diario,
           spreadsheet_id,
-          status: true
+          status: true,
+          leads_recebidos_hoje: 0
         }
       ])
-      .select()
-      .single();
+      .select();
 
     if (error) throw error;
 
-    res.status(201).json(data);
+    res.status(201).json(data[0]);
   } catch (error) {
     console.error('Erro ao criar cliente:', error);
     res.status(500).json({ error: 'Erro ao criar cliente' });
