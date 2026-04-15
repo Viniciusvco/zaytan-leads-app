@@ -32,28 +32,32 @@ export default function LoginPage({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       {/* Container */}
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-100">
           {/* Header com Brand */}
-          <div className="bg-gradient-to-r from-orange-600 to-orange-500 px-8 py-12 text-center">
-            {/* Logo */}
-            <div className="mb-4 flex justify-center">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-                <svg
-                  viewBox="0 0 100 100"
-                  className="w-12 h-12 text-orange-600"
-                  fill="currentColor"
-                >
-                  <path d="M30 20 Q40 30 35 50 Q30 70 50 80 Q70 90 80 70 Q85 50 75 40 Q65 30 50 35" />
-                </svg>
-              </div>
+          <div className="bg-gradient-to-br from-orange-600 to-orange-500 px-8 py-16 text-center">
+            {/* Logo SVG - Zaytan */}
+            <div className="mb-6 flex justify-center">
+              <svg
+                viewBox="0 0 200 200"
+                className="w-24 h-24 text-white"
+                fill="currentColor"
+              >
+                {/* S/Z ondulado Zaytan */}
+                <path
+                  d="M 70 50 Q 100 35 130 50 Q 145 60 140 80 Q 130 95 100 90 Q 75 85 70 100 Q 65 120 100 125 Q 130 130 145 145 Q 155 160 120 170 Q 90 175 60 160 Q 45 150 50 125"
+                  fill="white"
+                  stroke="white"
+                  strokeWidth="2"
+                />
+              </svg>
             </div>
 
-            <h1 className="text-3xl font-bold text-white mb-2">Zaytan</h1>
-            <p className="text-orange-100 text-sm">Lead Manager</p>
+            <h1 className="text-4xl font-bold text-white mb-1">Zaytan</h1>
+            <p className="text-orange-100 text-sm font-medium">Lead Manager</p>
           </div>
 
           {/* Form */}
@@ -125,8 +129,9 @@ export default function LoginPage({ onLogin }) {
         </div>
 
         {/* Info */}
-        <div className="mt-6 text-center text-orange-50 text-sm">
+        <div className="mt-6 text-center text-gray-500 text-sm">
           <p>🔒 Sistema de Distribuição de Leads</p>
+          <p className="text-orange-600 font-medium mt-2">Desenvolvido para Zaytan Marketing</p>
         </div>
       </div>
     </div>
