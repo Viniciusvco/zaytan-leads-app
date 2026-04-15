@@ -28,6 +28,37 @@ app.get('/health', (req, res) => {
 });
 
 // ============================================================
+// TEST: Verificar tabelas e schema
+// ============================================================
+app.get('/test/tables', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('clientes')
+      .select('*')
+      .limit(1);
+
+    if (error) {
+      return res.json({
+        status: 'ERROR',
+        message: error.message,
+        error: error.code
+      });
+    }
+
+    res.json({
+      status: 'OK',
+      message: 'Tabela clientes existe',
+      sampleData: data
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      message: error.message
+    });
+  }
+});
+
+// ============================================================
 // WEBHOOK: Receber Lead do Meta Ads
 // ============================================================
 app.post('/webhook/leads', async (req, res) => {
