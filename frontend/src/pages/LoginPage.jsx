@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Lock, Mail } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const ADMIN_EMAIL = 'vinicius.ap202@gmail.com';
 const ADMIN_PASSWORD = 'vini9500';
@@ -39,21 +40,13 @@ export default function LoginPage({ onLogin }) {
         <div className="bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-100">
           {/* Header com Brand */}
           <div className="bg-gradient-to-br from-orange-600 to-orange-500 px-8 py-16 text-center">
-            {/* Logo SVG - Zaytan */}
+            {/* Logo - Zaytan */}
             <div className="mb-6 flex justify-center">
-              <svg
-                viewBox="0 0 200 200"
-                className="w-24 h-24 text-white"
-                fill="currentColor"
-              >
-                {/* S/Z ondulado Zaytan */}
-                <path
-                  d="M 70 50 Q 100 35 130 50 Q 145 60 140 80 Q 130 95 100 90 Q 75 85 70 100 Q 65 120 100 125 Q 130 130 145 145 Q 155 160 120 170 Q 90 175 60 160 Q 45 150 50 125"
-                  fill="white"
-                  stroke="white"
-                  strokeWidth="2"
-                />
-              </svg>
+              <img
+                src={logo}
+                alt="Zaytan"
+                className="w-24 h-24 object-contain"
+              />
             </div>
 
             <h1 className="text-4xl font-bold text-white mb-1">Zaytan</h1>
